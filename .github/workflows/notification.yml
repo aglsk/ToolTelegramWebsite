@@ -25,7 +25,7 @@ jobs:
         id: commit_details
         run: |
           COMMIT_TITLE=$(git log -1 --pretty=format:'%s')
-          COMMIT_DESCRIPTION=$(git log -1 --pretty=format:'%b')
+          COMMIT_DESCRIPTION=$(git log -1 --pretty=format:'%b' | tr '\n' ' ')
           echo "commit_title=${COMMIT_TITLE}" >> $GITHUB_OUTPUT
           echo "commit_description=${COMMIT_DESCRIPTION}" >> $GITHUB_OUTPUT
 
@@ -43,7 +43,7 @@ jobs:
             🗒️ *Commit Details:*
             
             *Commit Title:* `${{ steps.commit_details.outputs.commit_title }}`
+            
             *Commit Description:* `${{ steps.commit_details.outputs.commit_description }}`
-            
-            For more information, visit: [Tool Telegram Website](https://aglsk.github.io/ToolTelegramWebsite)
-            
+
+            For more information, visit: [Tool Telegram Website](https://aglsk.github.io/ToolTelegramWebsite/)
