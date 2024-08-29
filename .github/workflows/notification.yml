@@ -1,0 +1,46 @@
+name: Notify Telegram on Website Update
+
+# Dispara o workflow em um push no branch principal ou em alterações no site
+on:
+  push:
+    branches:
+      - main  # Substitua 'main' pelo nome do branch do seu site, se necessário
+    paths:
+      - '**.html'
+      - '**.css'
+      - '**.js'
+      - '**.md'
+      - '**.yml'
+      - '**.json'
+
+jobs:
+  notify_telegram:
+    name: Notify Telegram
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Get Commit Information
+        id: commit_info
+        run: |
+          # Pega o título do commit e a descrição
+          commit_title=$(git log -1 --pretty=format:'%s')
+          commit_description=$(git log -1 --pretty=format:'%b')
+          echo "title=$commit_title" >> $GITHUB_OUTPUT
+          echo "description=$commit_description" >> $GITHUB_OUTPUT
+
+      - name: Send Notification to Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: -1002216267052  # Substitua pelo ID do seu canal no Telegram
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}  # Token do bot do Telegram
+          message: |
+            🚀 *Novo update no site!*
+
+            *Título do Commit:* `${{ steps.commit_info.outputs.title }}`
+            *Descrição do Commit:* `${{ steps.commit_info.outputs.description }}`
+            🌐 Acesse o site em [Tool Telegram Website](https://aglsk.github.io/ToolTelegramWebsite)
+
+          parse_mode: markdown
