@@ -1,44 +1,50 @@
-name: Notify Telegram on Website Update
+name: Website Update Notification
 
 on:
   push:
     branches:
-      - main  # Substitua pelo nome do branch principal
+      - main  # Main branch for production updates
     paths:
-      - '**.html'
-      - '**.css'
-      - '**.js'
-      - '**.md'
-      - '**.yml'
-      - '**.json'
+      - '**/*.html'
+      - '**/*.css'
+      - '**/*.js'
+      - '**/*.md'
+      - '**/*.yml'
+      - '**/*.json'
 
 jobs:
   notify_telegram:
-    name: Notify Telegram
+    name: Send Telegram Notification
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Get Commit Information
-        id: commit_info
+      - name: Retrieve Commit Details
+        id: commit_details
         run: |
-          commit_title=$(git log -1 --pretty=format:'%s')
-          commit_description=$(git log -1 --pretty=format:'%b')
-          echo "title=$commit_title" >> $GITHUB_OUTPUT
-          echo "description=$commit_description" >> $GITHUB_OUTPUT
+          COMMIT_TITLE=$(git log -1 --pretty=format:'%s')
+          COMMIT_DESCRIPTION=$(git log -1 --pretty=format:'%b')
+          echo "commit_title=${COMMIT_TITLE}" >> $GITHUB_OUTPUT
+          echo "commit_description=${COMMIT_DESCRIPTION}" >> $GITHUB_OUTPUT
 
       - name: Send Notification to Telegram
         uses: appleboy/telegram-action@master
         with:
-          to: -1002216267052  # Substitua pelo ID correto do canal ou grupo
-          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}  # Token do bot do Telegram
-          format: markdown  # Correção aqui
+          to: -1002216267052  # Replace with the correct Telegram channel or group ID
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}  # Your Telegram bot token stored in GitHub Secrets
+          format: markdown
           message: |
-            🚀 *Novo update no site!*
+            🚀 *Website Update Notification!*
 
-            *Título do Commit:* `${{ steps.commit_info.outputs.title }}`
-            *Descrição do Commit:* `${{ steps.commit_info.outputs.description }}`
-            🌐 Acesse o site em [ToolTelegramWebsite](https://aglsk.github.io/ToolTelegramWebsite)
+            🌐 Visit the repository: [Tool Telegram Website Repo](https://github.com/aglsk/ToolTelegramWebsite)
 
+            🗒️ *Commit Details:*
+            |||
+            *Commit Title:* `${{ steps.commit_details.outputs.commit_title }}`
+            *Commit Description:* `${{ steps.commit_details.outputs.commit_description }}`
+            |||
+
+            For more information, visit: [Tool Telegram Website](https://aglsk.github.io/ToolTelegramWebsite)
+            
