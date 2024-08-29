@@ -41,10 +41,9 @@ jobs:
             🌐 Visit the repository: [Tool Telegram Website Repo](https://github.com/aglsk/ToolTelegramWebsite)
 
             🗒️ *Commit Details:*
-            |||
+            
             *Commit Title:* `${{ steps.commit_details.outputs.commit_title }}`
             *Commit Description:* `${{ steps.commit_details.outputs.commit_description }}`
-            |||
-
+            
             For more information, visit: [Tool Telegram Website](https://aglsk.github.io/ToolTelegramWebsite)
             
