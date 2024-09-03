@@ -14,26 +14,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send webhook to Google Apps Script
-        uses: actions/http-client@v2
-        with:
-          url: 'https://script.google.com/macros/s/AKfycbyVLXPSeDxLlj9U-tbM_m19aiA0ZumnKbRoHKx_hy6JSJQVDn6QR_pIxozAsiz53D0qGg/exec'
-          method: 'POST'
-          headers: |
-            X-Hub-Signature-256: ${{ secrets.GITHU_WEBHOOK_SECRET }}
-          body: |
-            {
-              "repository": {
-                "full_name": "${{ github.repository }}"
-              },
-              "action": "push",
-              "commits": [
-                {
-                  "author": {
-                    "name": "${{ github.actor }}"
-                  },
-                  "message": "${{ github.event.head_commit.message }}",
-                  "timestamp": "${{ github.event.head_commit.timestamp }}",
-                  "url": "${{ github.event.head_commit.url }}"
-                }
-              ]
-            }
+        run: |
+          curl -X POST "https://script.google.com/macros/s/AKfycbyVLXPSeDxLlj9U-tbM_m19aiA0ZumnKbRoHKx_hy6JSJQVDn6QR_pIxozAsiz53D0qGg/exec" \
+          -H "Content-Type: application/json" \
+          -H "X-Hub-Signature-256: ${{ secrets.GITHU_WEBHOOK_SECRET }}" \
+          -d '{
+            "repository": {
+              "full_name": "${{ github.repository }}"
+            },
+            "action": "push",
+            "commits": [
+              {
+                "author": {
+                  "name": "${{ github.actor }}"
+                },
+                "message": "${{ github.event.head_commit.message }}",
+                "timestamp": "${{ github.event.head_commit.timestamp }}",
+                "url": "${{ github.event.head_commit.url }}"
+              }
+            ]
+          }'
