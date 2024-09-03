@@ -13,6 +13,19 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up environment variables
+        run: echo "REPO_NAME=${{ github.repository }}" >> $GITHUB_ENV
+
+      - name: Debugging information
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Commit message: ${{ github.event.head_commit.message }}"
+          echo "Timestamp: ${{ github.event.head_commit.timestamp }}"
+          echo "Commit URL: ${{ github.event.head_commit.url }}"
+
       - name: Send webhook to Google Apps Script
         run: |
           curl -X POST "https://script.google.com/macros/s/AKfycbyVLXPSeDxLlj9U-tbM_m19aiA0ZumnKbRoHKx_hy6JSJQVDn6QR_pIxozAsiz53D0qGg/exec" \
