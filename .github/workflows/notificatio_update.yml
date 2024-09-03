@@ -19,7 +19,7 @@ jobs:
           url: 'https://script.google.com/macros/s/AKfycbyVLXPSeDxLlj9U-tbM_m19aiA0ZumnKbRoHKx_hy6JSJQVDn6QR_pIxozAsiz53D0qGg/exec'
           method: 'POST'
           headers: |
-            X-Hub-Signature-256: ${{ secrets.GITHUB_WEBHOOK_SECRET }}
+            X-Hub-Signature-256: ${{ secrets.GITHU_WEBHOOK_SECRET }}
           body: |
             {
               "repository": {
